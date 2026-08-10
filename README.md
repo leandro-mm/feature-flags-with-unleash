@@ -5,6 +5,13 @@ From Risky Deployments to Controlled Rollouts
 
 Picture this: You need to replace a legacy feature of your product. In our cenario, it's going to be an API endpoint living in a monorepo, used by multiple users.
 
+### 🌐 **pt-br**:
+```markdown
+- Desafio: Implantação tradicional significa que qualquer bug impacta instantaneamente 100% dos usuários, e rollbacks exigem reimplantação completa do sistema. 
+- Ação: Sistema de feature flags usando Unleash. 
+- Resultado: tempo de rollback reduzido de minutos para segundos, aumento na frequência de implantações
+```
+
 **The risks were real:**
 - ❌ One bug affects 100% of users immediately
 - ❌ Rollback means full deployment revert
