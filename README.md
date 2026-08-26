@@ -131,16 +131,11 @@ Feature flags aren't just about toggling features. They're about shifting left o
 
 ## Resources to Get Started
 ```csharp
-  # Run Unleash locally with Docker
-  docker run -p 4242:4242 unleashorg/unleash-server:latest
-  
-  # Add to your .NET project
-  dotnet add package Unleash.Client
-  
-  # Configure in appsettings.json
-  {
-    "Unleash": {
-      "ApiUrl": "http://localhost:4242/api"
-    }
-  }
+# Start Docker Desktop, then run:
+docker compose up --build -d
+
+#Ports:
+#FeatureFlag.Web: http://localhost:5087
+#FeatureFlag.API: http://localhost:5086
+#Unleash: http://localhost:4242
 ```
