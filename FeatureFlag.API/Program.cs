@@ -3,6 +3,7 @@ using Scalar.AspNetCore;
 using FeatureFlag.API.Features.WeatherForecast.DTOs;
 using FeatureFlag.API.Features.WeatherForecast.Queries;
 using FeatureFlag.API.Features.WeatherForecast.Endpoints;
+using FeatureFlag.API.Features.EBirdApi.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,20 +45,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapGetWeatherByLongLatEndpoint();
-
-// app.MapGet("/weatherforecast", () =>
-// {
-//     var forecast = Enumerable.Range(1, 5).Select(index =>
-//         new WeatherForecastDto
-//         (
-//             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-//             Random.Shared.Next(-20, 55),
-//             summaries[Random.Shared.Next(summaries.Length)]
-//         ))
-//         .ToArray();
-//     return forecast;
-// })
-// .WithName("GetWeatherForecast");
+app.MapGetEBirdByRegionNameEndpoint();
 
 app.Run();
 
