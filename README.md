@@ -139,3 +139,7 @@ docker compose up --build -d
 #FeatureFlag.API: http://localhost:5086
 #Unleash: http://localhost:4242
 ```
+## Links
+[Weatherstack API](https://docs.apilayer.com/weatherstack/docs/api-documentation?utm_source=WeatherstackHomePage&utm_medium=Referral) 
+
+
