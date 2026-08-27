@@ -1,5 +1,7 @@
 using MediatR;
 using FeatureFlag.API.Features.WeatherForecast.Queries;
+using FeatureFlag.API.Features.WeatherForecast.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FeatureFlag.API.Features.WeatherForecast.Endpoints;
 
@@ -8,12 +10,15 @@ public static class GetWeatherByLongLatEndpoint
     public static void MapGetWeatherByLongLatEndpoint(
         this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapGet("/weatherforecast/longlat", async (
+        endpoints.MapPost("/weatherforecast/longlat", async (
             IMediator mediator,
-            double longitude,
-            double latitude) =>
+            [FromBody] WeatherForecastRequestDto request) =>
         {
-            var query = new GetWeatherByLongLatQuery(longitude, latitude);
+            var query = new GetWeatherByLongLatQuery(
+                Longitude: request.Longitude,
+                Latitude: request.Latitude,
+                UserName: request.UserName);
+
             var forecast = await mediator.Send(query);
             return forecast;
         })
