@@ -5,4 +5,4 @@ using MediatR;
 namespace FeatureFlag.API.Features.WeatherForecast.Queries;
 
 public record GetWeatherByLongLatQuery(double Longitude, double Latitude, string UserName)
-    : IRequest<WeatherForecastDto>;
+    : IRequest<WeatherForecastResponseDto>;
