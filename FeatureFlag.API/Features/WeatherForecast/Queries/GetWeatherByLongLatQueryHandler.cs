@@ -4,16 +4,16 @@ using MediatR;
 namespace FeatureFlag.API.Features.WeatherForecast.Queries;
 
 public class GetWeatherByLongLatQueryHandler
-    : IRequestHandler<GetWeatherByLongLatQuery, WeatherForecastDto>
+    : IRequestHandler<GetWeatherByLongLatQuery, WeatherForecastResponseDto>
 {
-    public Task<WeatherForecastDto> Handle(GetWeatherByLongLatQuery request, CancellationToken cancellationToken)
+    public Task<WeatherForecastResponseDto> Handle(GetWeatherByLongLatQuery request, CancellationToken cancellationToken)
     {
         var summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        var forecast = new WeatherForecastDto
+        var forecast = new WeatherForecastResponseDto
         (
             DateOnly.FromDateTime(DateTime.Now),
             Random.Shared.Next(-20, 55),
