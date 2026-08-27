@@ -1,10 +1,32 @@
 using FeatureFlag.Web.Components;
+using FeatureFlag.Web.Services;
+using FeatureFlag.Web.Settings;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
+builder.Services.AddHttpClient("WebApi", (sp, client) =>
+{
+    var settings = sp.GetRequiredService<IOptions<ApiSettings>>().Value;
+    client.BaseAddress = new Uri(settings.BaseUrl);
+});
+
+builder.Services.AddScoped<ApiService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazor", policy =>
+    {
+        policy.WithOrigins("https://localhost:5001", "http://localhost:5000")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -23,5 +45,7 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.UseCors("AllowBlazor");
 
 app.Run();
