@@ -18,16 +18,6 @@ builder.Services.AddHttpClient("WebApi", (sp, client) =>
 
 builder.Services.AddScoped<ApiService>();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowBlazor", policy =>
-    {
-        policy.WithOrigins("https://localhost:5001", "http://localhost:5000")
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -45,7 +35,4 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
-app.UseCors("AllowBlazor");
-
 app.Run();
