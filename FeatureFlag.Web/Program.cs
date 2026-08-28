@@ -2,6 +2,7 @@ using FeatureFlag.Web.Components;
 using FeatureFlag.Web.Services;
 using FeatureFlag.Web.Settings;
 using Microsoft.Extensions.Options;
+using CurrieTechnologies.Razor.SweetAlert2;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ builder.Services.AddHttpClient("WebApi", (sp, client) =>
 });
 
 builder.Services.AddScoped<ApiService>();
+
+builder.Services.AddSweetAlert2();
 
 var app = builder.Build();
 
