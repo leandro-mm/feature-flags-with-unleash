@@ -40,8 +40,6 @@ builder.Services.AddHttpClient<IEBirdApiService, EbirdApiService>(client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
-builder.Services.AddScoped<IEBirdApiService, EbirdApiService>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
