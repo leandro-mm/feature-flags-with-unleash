@@ -17,7 +17,4 @@ EXPOSE 8080
 ENV ASPNETCORE_HTTP_PORTS=8080
 
 COPY --from=build /app/publish .
-
-RUN mkdir -p /run/secrets
-
 ENTRYPOINT ["dotnet", "FeatureFlag.API.dll"]

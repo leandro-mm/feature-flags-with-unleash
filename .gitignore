@@ -398,9 +398,6 @@ FodyWeavers.xsd
 # Windows Installer files from build outputs
 *.cab
 *.msi
-
-# Local secrets (do not commit your real API keys)
-secrets/ebird_api_key.txt
 *.msix
 *.msm
 *.msp
