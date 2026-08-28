@@ -147,7 +147,7 @@ docker compose up --build -d
 
 #Ports:
 #FeatureFlag.Web: http://localhost:5087
-#FeatureFlag.API: http://localhost:5086
+#FeatureFlag.API: http://localhost:5086/scalar
 #Unleash: http://localhost:4242
 ```
 
