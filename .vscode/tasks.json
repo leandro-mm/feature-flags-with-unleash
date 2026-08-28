@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["build", "FeatureFlag.API/FeatureFlag.API.csproj"],
+      "problemMatcher": "$msCompile",
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "build:solution",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["build", "FeatureFlag.slnx"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "test",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["test", "FeatureFlag.Tests/FeatureFlag.Tests.csproj"],
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}

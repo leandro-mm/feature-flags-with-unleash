@@ -4,6 +4,7 @@ using FeatureFlag.API.Features.WeatherForecast.DTOs;
 using FeatureFlag.API.Features.WeatherForecast.Queries;
 using FeatureFlag.API.Features.WeatherForecast.Endpoints;
 using FeatureFlag.API.Features.EBirdApi.Endpoints;
+using FeatureFlag.API.Features.EBirdApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,15 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddHttpClient();
+// Register a typed HttpClient for the eBird API
+builder.Services.AddHttpClient<IEBirdApiService, EbirdApiService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["EBird:BaseUrl"] ?? "https://api.ebird.org/v2/");
+    client.Timeout = TimeSpan.FromSeconds(30);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddScoped<IEBirdApiService, EbirdApiService>();
 
 var app = builder.Build();
 

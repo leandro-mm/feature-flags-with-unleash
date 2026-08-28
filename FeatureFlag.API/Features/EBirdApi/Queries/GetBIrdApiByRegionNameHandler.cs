@@ -1,21 +1,25 @@
 using FeatureFlag.API.Features.EBirdApi.DTOs;
 using FeatureFlag.API.Features.EBirdApi.Queries;
+using FeatureFlag.API.Features.EBirdApi.Services;
 using MediatR;
+using System.ComponentModel.Design;
 using System.Net.Http;
 using System.Text.Json;
+using System.Linq;
+
 
 namespace FeatureFlag.API.Features.EBirdApi.Queries;
 
 public class GetBirdApiByRegionNameHandler : IRequestHandler<GetBirdApiByRegionNameQuery, EBirdApiResponse?>
 {
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IEBirdApiService _eBirdApiService;
     private readonly ILogger<GetBirdApiByRegionNameHandler> _logger;
 
     public GetBirdApiByRegionNameHandler(
-                IHttpClientFactory httpClientFactory,
+                IEBirdApiService eBirdApiService,
                 ILogger<GetBirdApiByRegionNameHandler> logger)
     {
-        _httpClientFactory = httpClientFactory;
+        _eBirdApiService = eBirdApiService;
         _logger = logger;
     }
 
@@ -25,27 +29,10 @@ public class GetBirdApiByRegionNameHandler : IRequestHandler<GetBirdApiByRegionN
         {
             var region = request.RegionCode;
             var userName = request.UserName;
-            var apiKey = "626f7fca-a2e2-4c42-8f6f-398afcbcb713";
-            var url = $"https://api.ebird.org/v2/data/obs/{region}/recent?key={apiKey}";
-            var client = _httpClientFactory.CreateClient();
 
-            _logger.LogInformation($"Calling eBird API for region: {region}");
+            _logger.LogInformation($"Processing request for region: {region}");
 
-            var response = await client.GetAsync(url, cancellationToken);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                _logger.LogError($"eBird API returned error: {response.StatusCode}");
-                throw new HttpRequestException($"Failed to get bird data from eBird API: {response.StatusCode}");
-            }
-
-            // Read the response content
-            var jsonResponse = await response.Content.ReadAsStringAsync(cancellationToken);
-
-            var observations = JsonSerializer.Deserialize<List<EBirdApiResponse>>(jsonResponse, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            var observations = await _eBirdApiService.GetBirdDataByRegionAsync(region, cancellationToken);
 
             if (observations == null || observations.Count == 0)
             {

@@ -47,8 +47,13 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 8080
+      # If you don't want to commit secrets, set EBIRD__APIKEY_FILE via Docker secrets mapping
+      # The application will read the API key from this file if EBird:ApiKey is not set.
+      EBIRD__APIKEY_FILE: /run/secrets/ebird_api_key
     ports:
       - "5086:8080"
+    secrets:
+      - ebird_api_key
 
   featureflag-web:
     build:
@@ -66,3 +71,7 @@ services:
 
 volumes:
   unleash-db-data:
+
+secrets:
+  ebird_api_key:
+    file: ./secrets/ebird_api_key.txt
