@@ -400,7 +400,7 @@ FodyWeavers.xsd
 *.msi
 
 # Local secrets (do not commit your real API keys)
-secrets/ebird_api_key.txt
+secrets/
 *.msix
 *.msm
 *.msp
