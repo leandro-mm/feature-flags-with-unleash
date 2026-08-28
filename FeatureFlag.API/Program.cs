@@ -5,6 +5,7 @@ using FeatureFlag.API.Features.WeatherForecast.Queries;
 using FeatureFlag.API.Features.WeatherForecast.Endpoints;
 using FeatureFlag.API.Features.EBirdApi.Endpoints;
 using FeatureFlag.API.Features.EBirdApi.Services;
+using FeatureFlag.API.PolyConfig;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +39,10 @@ builder.Services.AddHttpClient<IEBirdApiService, EbirdApiService>(client =>
     client.BaseAddress = new Uri(builder.Configuration["EBird:BaseUrl"] ?? "https://api.ebird.org/v2/");
     client.Timeout = TimeSpan.FromSeconds(30);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
+})
+.AddPolicyHandler(PolyConfig.GetRetryPolicy()) // Add retry policy
+.AddPolicyHandler(PolyConfig.GetCircuitBreakerPolicy()); // Optional: Add circuit breaker
+;
 
 var app = builder.Build();
 
