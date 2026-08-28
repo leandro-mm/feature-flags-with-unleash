@@ -6,97 +6,12 @@
 
 <PageTitle>Home</PageTitle>
 
-<<<<<<< Updated upstream <h1>Hello, world!</h1>
-    <div>
 
-        <button class="btn btn-sm btn-info" @onclick="() => CallMyEndpoint()">
-            Get weather forecast
-        </button>
-    </div>
-
-    <div class="spinner-border text-primary" role="status" hidden="@(!isloading)">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-
-    @if (weatherData != null)
-    {
-        <div class="card mt-3" style="max-width: 400px;">
-            <div class="card-header bg-primary text-white">
-                <h5 class="card-title mb-0">Weather Forecast</h5>
-            </div>
-            <div class="card-body">
-                <div class="row mb-2">
-                    <div class="col-4 fw-bold">Summary:</div>
-                    <div class="col-8">@weatherData.Summary</div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-4 fw-bold">Temperature:</div>
-                    <div class="col-8">@weatherData.TemperatureC °C / @weatherData.TemperatureF °F</div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-4 fw-bold">Date:</div>
-                    <div class="col-8">@weatherData.Date.ToShortDateString()</div>
-                </div>
-            </div>
-        </div>
-    }
-
-
-@code {
-    bool isloading = false;
-    WeatherForecastDto? weatherData;
-
-    private async Task CallMyEndpoint()
-    {
-        isloading = true;
-        StateHasChanged();
-        try
-        {
-
-            var requestData = new
-            {
-                Longitude = -122.4194,
-                Latitude = 37.7749,
-                UserName = "JohnDoe"
-            };
-
-            weatherData = await ApiService.PostAsync<WeatherForecastDto>("/weatherforecast/longlat", requestData);
-            isloading = false;
-
-            StateHasChanged();
-
-            Console.WriteLine($"Weather Forecast: {weatherData.Summary}, {weatherData.TemperatureC}°C");
-        }
-        catch (Exception ex)
-        {
-            isloading = false;
-            StateHasChanged();
-
-            await InvokeAsync(async () =>
-                                            {
-                                                await Swal.FireAsync(new SweetAlertOptions
-                                                {
-                                                    Title = "Erro",
-                                                    Text = ex.Message,
-                                                    Icon = SweetAlertIcon.Error,
-                                                    Timer = 3000
-                                                });
-                                            });
-
-            Console.WriteLine($"❌ Erro {ex.Message}");
-        }
-
-    }
-}
-
-Welcome to your new app.
-=======
 <div>
 
     <button class="btn btn-sm btn-info" @onclick="() => CallMyEndpoint()">
         Get weather forecast
     </button>
-
 </div>
 
 <div class="spinner-border text-primary" role="status" hidden="@(!isloading)">
@@ -125,6 +40,8 @@ Welcome to your new app.
         </div>
     </div>
 }
+
+
 <hr />
 <br />
 <div class="row mb-3">
@@ -173,12 +90,11 @@ Welcome to your new app.
 
 @code {
     bool isloading = false;
+    string selectedRegion = "US-MA";
+    string selectedUserType = "Admin";
     WeatherForecastDto? weatherData;
     EBirdApiResponse? eBirdData;
 
-    // Variables for select lists
-    string selectedRegion = "US-MA";
-    string selectedUserType = "Admin";
     private async Task CallMyEndpoint()
     {
         isloading = true;
@@ -218,7 +134,6 @@ Welcome to your new app.
 
             Console.WriteLine($"❌ Erro {ex.Message}");
         }
-
     }
     private async Task EBirdsEndpoint()
     {
@@ -226,7 +141,6 @@ Welcome to your new app.
         StateHasChanged();
         try
         {
-
             var requestData = new
             {
                 RegionCode = selectedRegion,
@@ -262,4 +176,4 @@ Welcome to your new app.
     }
 
 }
->>>>>>> Stashed changes
+
