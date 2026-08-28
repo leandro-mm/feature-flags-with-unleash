@@ -2,6 +2,180 @@
 
 <PageTitle>Home</PageTitle>
 
+<<<<<<< Updated upstream
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+=======
+<div>
+
+    <button class="btn btn-sm btn-info" @onclick="() => CallMyEndpoint()">
+        Get weather forecast
+    </button>
+
+</div>
+
+<div class="spinner-border text-primary" role="status" hidden="@(!isloading)">
+    <span class="visually-hidden">Loading...</span>
+</div>
+
+@if (weatherData != null)
+{
+    <div class="card mt-3" style="max-width: 400px;">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0">Weather Forecast</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col-4 fw-bold">Summary:</div>
+                <div class="col-8">@weatherData.Summary</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4 fw-bold">Temperature:</div>
+                <div class="col-8">@weatherData.TemperatureC °C / @weatherData.TemperatureF °F</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4 fw-bold">Date:</div>
+                <div class="col-8">@weatherData.Date.ToShortDateString()</div>
+            </div>
+        </div>
+    </div>
+}
+<hr />
+<br />
+<div class="row mb-3">
+    <div class="col-md-4">
+        <label for="regionSelect" class="form-label fw-bold">Region:</label>
+        <select id="regionSelect" class="form-select" @bind="selectedRegion">
+            <option value="US-MA">US-MA</option>
+            <option value="BR-RS">BR-RS</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label for="userTypeSelect" class="form-label fw-bold">User Type:</label>
+        <select id="userTypeSelect" class="form-select" @bind="selectedUserType">
+            <option value="Admin">Admin</option>
+            <option value="Normal">Normal</option>
+        </select>
+    </div>
+</div>
+<br />
+<button class="btn btn-sm btn-info" @onclick="() => EBirdsEndpoint()">
+    Get eBird data
+</button>
+@if (eBirdData != null)
+{
+    <div class="card mt-3" style="max-width: 400px;">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0">eBird Data</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col-4 fw-bold">Summary:</div>
+                <div class="col-8">@eBirdData.ComName</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4 fw-bold">Scientific Name:</div>
+                <div class="col-8">@eBirdData.SciName</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4 fw-bold">Date:</div>
+                <div class="col-8">@eBirdData.ObsDt</div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    bool isloading = false;
+    WeatherForecastDto? weatherData;
+    EBirdApiResponse? eBirdData;
+
+    // Variables for select lists
+    string selectedRegion = "US-MA";
+    string selectedUserType = "Admin";
+    private async Task CallMyEndpoint()
+    {
+        isloading = true;
+        StateHasChanged();
+        try
+        {
+
+            var requestData = new
+            {
+                Longitude = -122.4194,
+                Latitude = 37.7749,
+                UserName = "JohnDoe"
+            };
+
+            weatherData = await ApiService.PostAsync<WeatherForecastDto>("/weatherforecast/longlat", requestData);
+            isloading = false;
+
+            StateHasChanged();
+
+            Console.WriteLine($"Weather Forecast: {weatherData.Summary}, {weatherData.TemperatureC}°C");
+        }
+        catch (Exception ex)
+        {
+            isloading = false;
+            StateHasChanged();
+
+            await InvokeAsync(async () =>
+                                            {
+                                                await Swal.FireAsync(new SweetAlertOptions
+                                                {
+                                                    Title = "Erro",
+                                                    Text = ex.Message,
+                                                    Icon = SweetAlertIcon.Error,
+                                                    Timer = 3000
+                                                });
+                                            });
+
+            Console.WriteLine($"❌ Erro {ex.Message}");
+        }
+
+    }
+    private async Task EBirdsEndpoint()
+    {
+        isloading = true;
+        StateHasChanged();
+        try
+        {
+
+            var requestData = new
+            {
+                RegionCode = selectedRegion,
+                UserName = selectedUserType == "Admin" ? "AdminUser" : "NormalUser"
+            };
+
+            eBirdData = await ApiService.PostAsync<EBirdApiResponse>("/ebird/by-region-name", requestData);
+            isloading = false;
+
+            StateHasChanged();
+
+            Console.WriteLine($"EBirds Endpoint: {eBirdData.ComName}, {eBirdData.SciName}");
+        }
+        catch (Exception ex)
+        {
+            isloading = false;
+            StateHasChanged();
+
+            await InvokeAsync(async () =>
+                                            {
+                                                await Swal.FireAsync(new SweetAlertOptions
+                                                {
+                                                    Title = "Erro",
+                                                    Text = ex.Message,
+                                                    Icon = SweetAlertIcon.Error,
+                                                    Timer = 3000
+                                                });
+                                            });
+
+            Console.WriteLine($"❌ Erro {ex.Message}");
+        }
+
+    }
+
+}
+>>>>>>> Stashed changes

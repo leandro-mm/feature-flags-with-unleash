@@ -31,7 +31,18 @@ builder.Services.AddCors(options =>
     });
 });
 
+<<<<<<< Updated upstream
 builder.Services.AddHttpClient();
+=======
+// Register a typed HttpClient for the eBird API
+builder.Services.AddHttpClient<IEBirdApiService, EbirdApiService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["EBird:BaseUrl"] ?? "https://api.ebird.org/v2/");
+    client.Timeout = TimeSpan.FromSeconds(30);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+>>>>>>> Stashed changes
 
 var app = builder.Build();
 
